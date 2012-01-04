@@ -18,11 +18,14 @@ module AmazonProduct
       # * `:net_http`
       # * `:curb`
       # * `:synchrony`
+      # * `:typhoeus`
       #
-      # For the latter two, you will have to make available the
+      # For the latter three, you will have to make available the
       # dependent gems manually.
       def adapter=(client)
         case client
+        when :typhoeus
+          require 'typhoeus'
         when :curb
           require 'curb'
         when :synchrony
@@ -85,6 +88,37 @@ module AmazonProduct
       http.errback  { block.call(resp.call) }
     end
 
+    class TyphoeusWrapper
+      def initialize(tresponse, aresponse)
+        @tresponse, @aresponse = tresponse, aresponse
+      end
+
+      def response
+        @aresponse
+      end
+
+      def method_missing(method, *args, &block)
+        @tresponse.send(method, *args, &block)
+      end
+    end
+
+    # Returns a Typhoeus Request object for use in a hydra
+    #
+    # Calls given block in on_complete and passes the response as the
+    # "response" method in the Typhoeus Response object.
+    def areq(options={}, &block)
+      unless adapter == :typhoeus
+        raise TypeError, "Set HTTP client to :typhoeus"
+      end
+
+      req = Typhoeus::Request.new(url.to_s, options)
+      req.on_complete do |response|
+        block.call(TyphoeusWrapper.new(response, Response.new(response.body, response.code)))
+      end
+
+      req
+    end
+
     # Configures the Amazon locale.
     #
     #   request.configure do |c|
@@ -100,6 +134,9 @@ module AmazonProduct
     # Performs a request.
     def get
       case adapter
+      when :typhoeus
+        http = Typhoeus::Request.get(url.to_s)
+        body, code = http.body, http.code
       when :curb
         http = Curl::Easy.perform(url.to_s)
         body, code = http.body_str, http.response_code

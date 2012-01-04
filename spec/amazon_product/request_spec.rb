@@ -106,6 +106,52 @@ module AmazonProduct
       end
     end
 
+    describe '#areq' do
+      before do
+        subject.configure do |c|
+          c.key = 'foo'
+          c.secret = 'bar'
+          c.tag = 'baz'
+        end
+      end
+
+      after do
+        Request.adapter = :net_http
+      end
+
+      context 'when using Typhoeus', :typhoeus do
+        before do
+          Request.adapter = :typhoeus
+        end
+
+        it 'yields a Typhoeus request' do
+          req = subject.areq { }
+          req.should be_a Typhoeus::Request
+        end
+
+        it 'calls the passed block with a TyphoeusWrapper object in on_complete' do
+          response = nil
+          req = subject.areq { |resp| response = resp }
+          tresponse = Typhoeus::Response.new(:body => "hi", :code => 200)
+          req.instance_variable_get("@on_complete").call(tresponse)
+
+          response.response.should be_a Response
+          tresponse.should_receive(:code).and_return(200)
+          tresponse.should_receive(:success?).and_return(true)
+          response.code.should == 200
+          response.success?.should be_true
+        end
+      end
+
+      context 'when using another adapter' do
+        it 'raises an error' do
+          expect {
+            subject.areq { }
+          }.to raise_error TypeError
+        end
+      end
+    end
+
     describe '#configure' do
       it 'yields the locale' do
         yielded = nil
@@ -143,6 +189,14 @@ module AmazonProduct
       end
 
       context 'when using Net::HTTP' do
+        it_behaves_like 'an HTTP request'
+      end
+
+      context 'when using Typhoeus' do
+        before do
+          Request.adapter = :typhoeus
+        end
+
         it_behaves_like 'an HTTP request'
       end
 
