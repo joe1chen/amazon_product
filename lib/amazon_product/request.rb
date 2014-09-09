@@ -177,7 +177,7 @@ module AmazonProduct
     def sign(unsigned_query)
       raise MissingSecret unless @locale.secret
 
-      digest = OpenSSL::Digest::Digest.new('sha256')
+      digest = OpenSSL::Digest.new('sha256')
       url_string = ['GET', @locale.host, '/onca/xml', unsigned_query].join("\n")
       hmac = OpenSSL::HMAC.digest(digest, @locale.secret, url_string)
       signature = escape([hmac].pack('m').chomp)
