@@ -9,6 +9,6 @@ gem 'em-synchrony',    '~> 1.0.0'
 gem 'typhoeus'
 gem 'pry' unless ENV['CI']
 gem 'rake'
-gem 'rspec'
+gem 'rspec', '~> 2'
 
 gem 'jruby-openssl', :platform => :jruby
