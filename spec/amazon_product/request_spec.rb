@@ -133,7 +133,7 @@ module AmazonProduct
           response = nil
           req = subject.areq { |resp| response = resp }
           tresponse = Typhoeus::Response.new(:body => "hi", :code => 200)
-          req.instance_variable_get("@on_complete").call(tresponse)
+          req.instance_variable_get("@on_complete")[0].call(tresponse)
 
           response.response.should be_a Response
           tresponse.should_receive(:code).and_return(200)
