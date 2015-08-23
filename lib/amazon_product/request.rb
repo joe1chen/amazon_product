@@ -150,8 +150,8 @@ module AmazonProduct
         body, code = resp.body, resp.code
       when :rest_core
         client = RC::Universal.new(site: url)
-        resp = client.request_full({})
-        body, code = resp[RC::RESPONSE_BODY], resp[RC::RESPONSE_STATUS]
+        resp = client.request_full({RC::REQUEST_METHOD => :get, RC::REQUEST_PATH => ''})
+        body, code = resp[RC::RESPONSE_BODY].tap{}, resp[RC::RESPONSE_STATUS].tap{}
       end
 
       Response.new(body, code)
