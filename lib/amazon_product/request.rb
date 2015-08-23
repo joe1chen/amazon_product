@@ -149,7 +149,7 @@ module AmazonProduct
         resp = Net::HTTP.get_response(url)
         body, code = resp.body, resp.code
       when :rest_core
-        client = RC::Universal.new(site: url)
+        client = RC::Universal.new(site: url.to_s)
         resp = client.request_full({RC::REQUEST_METHOD => :get, RC::REQUEST_PATH => ''})
         body, code = resp[RC::RESPONSE_BODY].tap{}, resp[RC::RESPONSE_STATUS].tap{}
       end
