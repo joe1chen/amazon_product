@@ -179,11 +179,19 @@ module AmazonProduct
         it 'returns a response' do
           if Request.adapter == :synchrony
             EM.synchrony do
-              subject.get.should be_a Response
+              r = subject.get
+              r.should be_a Response
+              r.code.should == 400
+              r.body.should_not == nil
+              puts r.body
               EM.stop
             end
           else
-            subject.get.should be_a Response
+            r = subject.get
+            r.should be_a Response
+            r.code.should == 400
+            r.body.should_not == nil
+            puts r.body
           end
         end
       end
@@ -215,6 +223,15 @@ module AmazonProduct
 
         it_behaves_like 'an HTTP request'
       end
+
+      context 'when using RestCore' do
+        before do
+          Request.adapter = :rest_core
+        end
+
+        it_behaves_like 'an HTTP request'
+      end
+
     end
 
     describe '#params' do

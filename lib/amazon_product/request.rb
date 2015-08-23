@@ -33,6 +33,8 @@ module AmazonProduct
           require 'em-synchrony/em-http'
         when :net_http
           require 'net/http'
+        when :rest_core
+          require 'rest-core'
         else
           raise ArgumentError, ":#{client} is not a valid HTTP client"
         end
@@ -146,6 +148,10 @@ module AmazonProduct
       when :net_http
         resp = Net::HTTP.get_response(url)
         body, code = resp.body, resp.code
+      when :rest_core
+        client = RC::Universal.new(site: url)
+        resp = client.request_full({})
+        body, code = resp[RC::RESPONSE_BODY], resp[RC::RESPONSE_STATUS]
       end
 
       Response.new(body, code)
