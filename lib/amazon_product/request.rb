@@ -5,7 +5,7 @@ module AmazonProduct
 
     # The latest Amazon API version. See:
     # http://aws.amazon.com/archives/Product%20Advertising%20API
-    CURRENT_API_VERSION = '2011-08-01'
+    CURRENT_API_VERSION = '2013-08-01'
 
     class << self
       # The HTTP client.
