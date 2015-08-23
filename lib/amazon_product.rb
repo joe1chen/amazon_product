@@ -19,4 +19,14 @@ module AmazonProduct
   def self.[](locale)
     @requests[locale] ||= Request.new(locale)
   end
+
+  # Create a _new_ request.
+  #
+  # Takes an Amazon locale as argument. This can be +ca+, +cn+, +de+, +fr+,
+  # +it+, +jp+, +uk+, or +us+.
+  #
+  # This method always returns a new request object.
+  def self.new(locale)
+    Request.new(locale)
+  end
 end
