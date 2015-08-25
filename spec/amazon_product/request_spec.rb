@@ -200,6 +200,15 @@ module AmazonProduct
         it_behaves_like 'an HTTP request'
       end
 
+      context 'when using Faraday' do
+        before do
+          Request.adapter = :faraday
+        end
+
+        it_behaves_like 'an HTTP request'
+      end
+
+
       context 'when using Curb', :jruby do
         before do
           Request.adapter = :curb

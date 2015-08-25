@@ -33,6 +33,8 @@ module AmazonProduct
           require 'em-synchrony/em-http'
         when :net_http
           require 'net/http'
+        when :faraday
+          require 'faraday'
         else
           raise ArgumentError, ":#{client} is not a valid HTTP client"
         end
@@ -146,6 +148,13 @@ module AmazonProduct
       when :net_http
         resp = Net::HTTP.get_response(url)
         body, code = resp.body, resp.code
+      when :faraday
+        conn = Faraday.new(:url => url.to_s)
+
+        http = conn.get do |req|
+          req.url url.to_s
+        end
+        body, code = http.body, http.status
       end
 
       Response.new(body, code)
