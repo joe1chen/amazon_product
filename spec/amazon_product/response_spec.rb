@@ -16,7 +16,7 @@ module AmazonProduct
             yielded = true
           end
 
-          yielded.should be_true
+          yielded.should == true
         end
       end
     end
@@ -38,14 +38,14 @@ module AmazonProduct
     describe '#has_errors?' do
       context 'when a response does not contain any errors' do
         it 'returns false' do
-          response.stub!(:errors).and_return([])
+          response.stub(:errors).and_return([])
           response.should_not have_errors
         end
       end
 
       context 'when a response contains errors' do
         it 'returns true' do
-          response.stub!(:errors).and_return([1])
+          response.stub(:errors).and_return([1])
           response.should have_errors
         end
       end

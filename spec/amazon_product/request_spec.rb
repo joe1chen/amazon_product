@@ -19,7 +19,7 @@ module AmazonProduct
       it "sets the adapter", :jruby do
         Request.adapter = :curb
         Request.adapter.should eql :curb
-        defined?(Curl).should be_true
+        defined?(Curl).should == 'constant'
       end
 
       it "raises an error when specified an invalid adapter" do
@@ -139,7 +139,7 @@ module AmazonProduct
           tresponse.should_receive(:code).and_return(200)
           tresponse.should_receive(:success?).and_return(true)
           response.code.should == 200
-          response.success?.should be_true
+          response.success?.should == true
         end
       end
 

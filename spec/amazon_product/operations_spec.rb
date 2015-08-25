@@ -9,7 +9,7 @@ module AmazonProduct
         c.key = 'foo'
         c.tag = 'bar'
       end
-      subject.stub!(:get)
+      subject.stub(:get)
     end
 
     describe "#find" do
