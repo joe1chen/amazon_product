@@ -8,6 +8,7 @@ gem 'em-http-request', '~> 1.0.0'
 gem 'em-synchrony',    '~> 1.0.0'
 gem 'typhoeus'
 gem 'faraday'
+gem 'httpclient', require: 'false'
 gem 'pry' unless ENV['CI']
 gem 'rake'
 gem 'rspec', '~> 2'

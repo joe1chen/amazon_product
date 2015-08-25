@@ -149,7 +149,14 @@ module AmazonProduct
         resp = Net::HTTP.get_response(url)
         body, code = resp.body, resp.code
       when :faraday
-        conn = Faraday.new(:url => url.to_s)
+        conn = nil
+        if defined?(HTTPClient)
+          conn = Faraday.new(:url => url.to_s) do |c|
+            c.adapter :httpclient
+          end
+        else
+          conn = Faraday.new(:url => url.to_s)
+        end
 
         http = conn.get do |req|
           req.url url.to_s
