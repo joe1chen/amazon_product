@@ -5,8 +5,8 @@ module AmazonProduct
     subject { Request.new('us') }
 
     describe ".adapter" do
-      it "defaults to :net_http" do
-        Request.adapter.should eql :net_http
+      it "defaults to :faraday" do
+        Request.adapter.should eql :faraday
         expect { Net::HTTP }.not_to raise_error
       end
     end
