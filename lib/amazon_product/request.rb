@@ -44,7 +44,7 @@ module AmazonProduct
     end
 
     # Set HTTP client to Net::HTTP.
-    Request.adapter = :net_http
+    Request.adapter = :faraday
 
     # Creates a new request for specified locale.
     def initialize(locale)
