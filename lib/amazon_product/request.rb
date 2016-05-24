@@ -160,6 +160,8 @@ module AmazonProduct
 
         http = conn.get do |req|
           req.url url.to_s
+          req.options.timeout = 10           # open/read timeout in seconds
+          req.options.open_timeout = 3       # connection open timeout in seconds
         end
         body, code = http.body, http.status
       end
