@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{A Ruby wrapper to the Amazon Product Advertising API}
   s.description = %q{Amazon Product is a Ruby wrapper to the Amazon Product Advertising API.}
 
-  s.add_runtime_dependency 'nokogiri', '~> 1.4'
+  s.add_runtime_dependency 'nokogiri', '>= 1.4'
   s.add_runtime_dependency 'eggnog'
 
   s.files         = Dir.glob('lib/**/*') + %w(LICENSE README.md)
