@@ -151,18 +151,14 @@ module AmazonProduct
       when :faraday
         conn = nil
         if defined?(HTTPClient)
-          conn = Faraday.new(:url => url.to_s) do |c|
+          conn = Faraday.new(url.to_s, request: {open_timeout: ENV['FARADAY_OPEN_TIMEOUT'] || 5, timeout: ENV['FARADAY_TIMEOUT'] || 5}) do |c|
             c.adapter :httpclient
           end
         else
-          conn = Faraday.new(:url => url.to_s)
+          conn = Faraday.new(url.to_s, request: {open_timeout: ENV['FARADAY_OPEN_TIMEOUT'] || 5, timeout: ENV['FARADAY_TIMEOUT'] || 5})
         end
 
-        http = conn.get do |req|
-          req.url url.to_s
-          req.options.timeout = 15            # open/read timeout in seconds
-          req.options.open_timeout = 10       # connection open timeout in seconds
-        end
+        http = conn.get(url.to_s)
         body, code = http.body, http.status
       end
 
