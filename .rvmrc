@@ -5,8 +5,8 @@
 
 # First we specify our desired <ruby>[@<gemset>], the @gemset name is optional,
 # Only full ruby name is supported here, for short names use:
-#     echo "rvm use 2.2.2@amazon_product" > .rvmrc
-environment_id="ruby-2.2.2@amazon_product"
+#     echo "rvm use 2.5.1@amazon_product" > .rvmrc
+environment_id="ruby-2.5.1@amazon_product"
 
 # Uncomment the following lines if you want to verify rvm version per project
 # rvmrc_rvm_version="1.25.28 (stable)" # 1.10.1 seems like a safe start
