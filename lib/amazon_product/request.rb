@@ -151,11 +151,11 @@ module AmazonProduct
       when :faraday
         conn = nil
         if defined?(HTTPClient)
-          conn = Faraday.new(url.to_s, request: {open_timeout: ENV['FARADAY_OPEN_TIMEOUT'] || 5, timeout: ENV['FARADAY_TIMEOUT'] || 5}) do |c|
+          conn = Faraday.new(url.to_s, request: {open_timeout: !ENV['FARADAY_OPEN_TIMEOUT'].blank? ? ENV['FARADAY_OPEN_TIMEOUT'].to_i : 5, timeout: !ENV['FARADAY_TIMEOUT'].blank? ? ENV['FARADAY_TIMEOUT'].to_i : 5}) do |c|
             c.adapter :httpclient
           end
         else
-          conn = Faraday.new(url.to_s, request: {open_timeout: ENV['FARADAY_OPEN_TIMEOUT'] || 5, timeout: ENV['FARADAY_TIMEOUT'] || 5})
+          conn = Faraday.new(url.to_s, request: {open_timeout: !ENV['FARADAY_OPEN_TIMEOUT'].blank? ? ENV['FARADAY_OPEN_TIMEOUT'].to_i : 5, timeout: !ENV['FARADAY_TIMEOUT'].blank? ? ENV['FARADAY_TIMEOUT'].to_i : 5})
         end
 
         http = conn.get(url.to_s)
